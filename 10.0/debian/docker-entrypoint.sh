@@ -10,6 +10,7 @@ if [ ! -z "$FULCRUM_HOST_UID" ]; then                                   #
 fi                                                                      #
                                                                         #
 if [ ! -z "$FULCRUM_HOST_GID" ]; then                                   #
+  addgroup --gid $FULCRUM_HOST_GID fulcrum                              #
   usermod -g $FULCRUM_HOST_GID mysql                                    #
   groupdel mysql                                                        #
   groupmod -n mysql $(id -g -n mysql)                                   #
