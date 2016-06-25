@@ -1,2 +1,1 @@
-# docker-mariadb
-IF Fulcrum Docker MariaDB
+# IF Fulcrum Docker MariaDB
