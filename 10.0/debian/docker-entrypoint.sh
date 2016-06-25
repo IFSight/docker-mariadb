@@ -43,7 +43,7 @@ _datadir() {
 
 # allow the container to be started with `--user`
 if [ "$1" = 'mysqld' -a -z "$wantHelp" -a "$(id -u)" = '0' ]; then
-	_fulcrum_id()
+	_fulcrum_id
 
 	DATADIR="$(_datadir "$@")"
 	mkdir -p "$DATADIR"
@@ -62,7 +62,7 @@ if [ "$1" = 'mysqld' -a -z "$wantHelp" ]; then
 			exit 1
 		fi
 
-		_fulcrum_id()
+		_fulcrum_id
 
 		mkdir -p "$DATADIR"
 
