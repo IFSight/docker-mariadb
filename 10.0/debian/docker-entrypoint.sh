@@ -4,6 +4,7 @@ set -eo pipefail
 #########################################################################
 ############ Fulcrum Environment for MacOSX/xhyve/DockerRoot ############
 #########################################################################
+_fulcrum_id() {
 if [ ! -z "$FULCRUM_HOST_UID" ]; then                                   #
   usermod -u $FULCRUM_HOST_UID mysql                                    #
   chown mysql /run/mysqld                                               #
@@ -15,6 +16,7 @@ if [ ! -z "$FULCRUM_HOST_GID" ]; then                                   #
   groupdel mysql                                                        #
   groupmod -n mysql $(id -g -n mysql)                                   #
 fi                                                                      #
+}
 #########################################################################
 ############ Fulcrum Environment for MacOSX/xhyve/DockerRoot ############
 #########################################################################
@@ -41,6 +43,8 @@ _datadir() {
 
 # allow the container to be started with `--user`
 if [ "$1" = 'mysqld' -a -z "$wantHelp" -a "$(id -u)" = '0' ]; then
+	_fulcrum_id()
+
 	DATADIR="$(_datadir "$@")"
 	mkdir -p "$DATADIR"
 	chown -R mysql:mysql "$DATADIR"
@@ -57,6 +61,8 @@ if [ "$1" = 'mysqld' -a -z "$wantHelp" ]; then
 			echo >&2 '  You need to specify one of MYSQL_ROOT_PASSWORD, MYSQL_ALLOW_EMPTY_PASSWORD and MYSQL_RANDOM_ROOT_PASSWORD'
 			exit 1
 		fi
+
+		_fulcrum_id()
 
 		mkdir -p "$DATADIR"
 
