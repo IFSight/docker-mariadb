@@ -4,19 +4,27 @@ set -eo pipefail
 #########################################################################
 ############ Fulcrum Environment for MacOSX/xhyve/DockerRoot ############
 #########################################################################
-_fulcrum_id() {
-if [ ! -z "$FULCRUM_HOST_UID" ]; then                                   #
-  usermod -u $FULCRUM_HOST_UID mysql                                    #
-  chown mysql /run/mysqld                                               #
-fi                                                                      #
+_fulcrum_id() {                                                         #
+  FGID=$FULCRUM_HOST_GID                                                #
+  FUID=$FULCRUM_HOST_UID                                                #
                                                                         #
-if [ ! -z "$FULCRUM_HOST_GID" ]; then                                   #
-  addgroup --gid $FULCRUM_HOST_GID fulcrum || true                      #
-  usermod -g $FULCRUM_HOST_GID mysql                                    #
-  groupdel mysql                                                        #
-  groupmod -n mysql $(id -g -n mysql)                                   #
-fi                                                                      #
-}
+  if [ ! -z "$FUID" ] && [ "$(id -u mysql)" != "$FUID" ]; then          #
+    usermod -u $FUID mysql                                              #
+    chown mysql /run/mysqld                                             #
+  fi                                                                    #
+                                                                        #
+  if [ ! -z "$FGID" ] && [ "$(id -g mysql)" != "$FGID" ]; then          #
+    info=$(getent group $FGID)                                          #
+                                                                        #
+    if [ "$?" != "0" ]; then                                            #
+      addgroup -g $FGID fulcrum                                         #
+    fi                                                                  #
+                                                                        #
+    usermod -g $FGID mysql                                              #
+    groupdel mysql                                                      #
+    groupmod -n mysql $(id -g -n mysql)                                 #
+  fi                                                                    #
+}                                                                       #
 #########################################################################
 ############ Fulcrum Environment for MacOSX/xhyve/DockerRoot ############
 #########################################################################

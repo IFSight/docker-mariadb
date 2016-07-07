@@ -3,7 +3,7 @@ MAINTAINER IF Fulcrum "fulcrum@ifsight.net"
 
 RUN echo '@testing http://dl-cdn.alpinelinux.org/alpine/edge/testing' >> /etc/apk/repositories && \
     apk update && apk upgrade && \
-	apk add bash gosu@testing mariadb mariadb-client tzdata && \
+	apk add bash gosu@testing mariadb mariadb-client shadow@testing tzdata && \
 	mkdir /docker-entrypoint-initdb.d /run/mysqld && \
     chown mysql.mysql /run/mysqld
 
