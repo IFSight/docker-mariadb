@@ -4,19 +4,19 @@ set -eo pipefail
 #########################################################################
 ############ Fulcrum Environment for MacOSX/xhyve/DockerRoot ############
 #########################################################################
-_fulcrum_id() {
-if [ ! -z "$FULCRUM_HOST_UID" ]; then                                   #
-  usermod -u $FULCRUM_HOST_UID mysql                                    #
-  chown mysql /run/mysqld                                               #
-fi                                                                      #
+_fulcrum_id() {                                                         #
+  if [ ! -z "$FULCRUM_HOST_UID" ]; then                                 #
+    usermod -u $FULCRUM_HOST_UID mysql                                  #
+    chown mysql /run/mysqld                                             #
+  fi                                                                    #
                                                                         #
-if [ ! -z "$FULCRUM_HOST_GID" ]; then                                   #
-  addgroup --gid $FULCRUM_HOST_GID fulcrum || true                      #
-  usermod -g $FULCRUM_HOST_GID mysql                                    #
-  groupdel mysql                                                        #
-  groupmod -n mysql $(id -g -n mysql)                                   #
-fi                                                                      #
-}
+  if [ ! -z "$FULCRUM_HOST_GID" ]; then                                 #
+    addgroup --gid $FULCRUM_HOST_GID fulcrum || true                    #
+    usermod -g $FULCRUM_HOST_GID mysql                                  #
+    groupdel mysql                                                      #
+    groupmod -n mysql $(id -g -n mysql)                                 #
+  fi                                                                    #
+}                                                                       #
 #########################################################################
 ############ Fulcrum Environment for MacOSX/xhyve/DockerRoot ############
 #########################################################################
