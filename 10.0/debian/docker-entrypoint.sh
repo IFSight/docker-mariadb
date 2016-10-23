@@ -1,25 +1,28 @@
 #!/bin/bash
 set -eo pipefail
 
-#########################################################################
-############ Fulcrum Environment for MacOSX/xhyve/DockerRoot ############
-#########################################################################
-_fulcrum_id() {                                                         #
-  if [ ! -z "$FULCRUM_HOST_UID" ]; then                                 #
-    usermod -u $FULCRUM_HOST_UID mysql                                  #
-    chown mysql /run/mysqld                                             #
-  fi                                                                    #
-                                                                        #
-  if [ ! -z "$FULCRUM_HOST_GID" ]; then                                 #
-    addgroup --gid $FULCRUM_HOST_GID fulcrum || true                    #
-    usermod -g $FULCRUM_HOST_GID mysql                                  #
-    groupdel mysql                                                      #
-    groupmod -n mysql $(id -g -n mysql)                                 #
-  fi                                                                    #
-}                                                                       #
-#########################################################################
-############ Fulcrum Environment for MacOSX/xhyve/DockerRoot ############
-#########################################################################
+###############################################################################
+##################### Fulcrum Environment for macOS/xhyve #####################
+###############################################################################
+_fulcrum_id() {                                                               #
+  M_UID=$(id -u mysql)                                                        #
+  M_GID=$(id -g mysql)                                                        #
+                                                                              #
+  if [ ! -z "$FULCRUM_HOST_UID" ] && [ "$M_UID"!="$FULCRUM_HOST_UID" ]; then  #
+    usermod -u $FULCRUM_HOST_UID mysql                                        #
+    chown mysql /run/mysqld                                                   #
+  fi                                                                          #
+                                                                              #
+  if [ ! -z "$FULCRUM_HOST_GID" ] && [ "$M_GID"!="$FULCRUM_HOST_GID" ]; then  #
+    addgroup --gid $FULCRUM_HOST_GID fulcrum || true                          #
+    usermod -g $FULCRUM_HOST_GID mysql                                        #
+    groupdel mysql                                                            #
+    groupmod -n mysql $(id -g -n mysql)                                       #
+  fi                                                                          #
+}                                                                             #
+###############################################################################
+##################### Fulcrum Environment for macOS/xhyve #####################
+###############################################################################
 
 # if command starts with an option, prepend mysqld
 if [ "${1:0:1}" = '-' ]; then
