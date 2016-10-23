@@ -15,9 +15,9 @@ _fulcrum_id() {                                                               #
                                                                               #
   if [ ! -z "$FULCRUM_HOST_GID" ] && [ "$M_GID"!="$FULCRUM_HOST_GID" ]; then  #
     addgroup --gid $FULCRUM_HOST_GID fulcrum || true                          #
-    usermod -g $FULCRUM_HOST_GID mysql || true                                        #
-    groupdel mysql || true                                                            #
-    groupmod -n mysql $(id -g -n mysql) || true                                       #
+    usermod -g $FULCRUM_HOST_GID mysql                                        #
+    groupdel mysql                                                            #
+    groupmod -n mysql $(id -g -n mysql)                                       #
   fi                                                                          #
 }                                                                             #
 ###############################################################################
