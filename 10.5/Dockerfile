@@ -4,9 +4,9 @@ FROM yobasystems/alpine-mariadb AS builder
 RUN apk add --no-cache binutils && \
 find /bin /lib /sbin /usr/bin /usr/lib /usr/sbin -type f -exec strip -v {} \; && \
 rm -f /var/cache/apk/* && \
-cp /usr/bin/mysql_upgrade /usr/bin/mysql_upgrade.bak && \ 
+cp /usr/bin/mariadb-upgrade /usr/bin/mariadb-upgrade.bak && \ 
 apk del mariadb-server-utils binutils && \
-cp /usr/bin/mysql_upgrade.bak /usr/bin/mysql_upgrade
+mv /usr/bin/mariadb-upgrade.bak /usr/bin/mariadb-upgrade
 
 # base off of scratch to squash build layers as small as possible
 FROM scratch
